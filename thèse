@@ -1,0 +1,11 @@
+cd gr52-snaps
+
+git init
+git add .
+git commit -m "Initial commit"
+
+git branch -M main
+
+git remote add origin https://github.com/VOUS/gr52-snaps.git
+
+git push -u origin main
