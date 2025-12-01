@@ -1,17 +1,11 @@
 gr52-snaps/
-    web/
-        _redirects
-        index.html
-        script.js
-        style.css
-        manifest.json
+    index.html
+    _redirects
+    script.js
+    style.css
+    manifest.json
     functions/
-        upload-image.js
-    netlify.toml   (optionnel)
-Parfait. Je t’ai préparé **tous les fichiers exacts**, organisés **à la bonne place**, avec **tout ce qu’il faut pour que Netlify fonctionne immédiatement**.
-
-🎯 **Tu n’as qu’à copier-coller exactement ce que je t’envoie dans tes dossiers Codespaces / GitHub, puis pousser.**
-
+    netlify.toml
 --- 
 
 # ✅ 1) FICHIER : `netlify.toml` (à la racine)
