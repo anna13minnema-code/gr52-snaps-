@@ -1,20 +1,19 @@
 gr52-snaps/
     index.html
-    _redirects
     script.js
     style.css
     manifest.json
+    _redirects
     functions/
+        upload-image.js
     netlify.toml
 --- 
 
 # ✅ 1) FICHIER : `netlify.toml` (à la racine)
 
-# netlify.toml - configuration prête à l'emploi
-
 [build]
-  publish = "."        # publier le contenu de web/ tel quel
-  functions = "../functions"  # chemin relatif depuis base
+  publish = "."
+  functions = "functions"
 
 [[redirects]]
   from = "/*"
