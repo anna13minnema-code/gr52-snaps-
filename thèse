@@ -36,7 +36,6 @@ Tu n’auras PAS besoin du fichier `_redirects` si tu utilises cette version.
 
 # ✅ 2) FICHIER : `package.json` (à la racine)
 
-```json
 {
   "name": "gr52-snaps",
   "version": "1.0.0",
@@ -44,9 +43,13 @@ Tu n’auras PAS besoin du fichier `_redirects` si tu utilises cette version.
   "dependencies": {
     "@supabase/supabase-js": "^2.40.0",
     "busboy": "^1.6.0"
+  },
+  "scripts": {
+    "start": "echo 'Nothing to build, just serving static files'",
+    "build": "echo 'Nothing to build, just serving static files'"
   }
 }
-```
+
 
 ---
 
