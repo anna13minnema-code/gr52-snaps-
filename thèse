@@ -1,5 +1,6 @@
 gr52-snaps/
     web/
+        _redirects
         index.html
         script.js
         style.css
