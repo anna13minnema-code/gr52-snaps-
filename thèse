@@ -8,4 +8,310 @@ gr52-snaps/
     functions/
         upload-image.js
     netlify.toml   (optionnel)
+Parfait. Je t’ai préparé **tous les fichiers exacts**, organisés **à la bonne place**, avec **tout ce qu’il faut pour que Netlify fonctionne immédiatement**.
+
+🎯 **Tu n’as qu’à copier-coller exactement ce que je t’envoie dans tes dossiers Codespaces / GitHub, puis pousser.**
+
+--- 
+
+# ✅ 1) FICHIER : `netlify.toml` (à la racine)
+
+```toml
+[build]
+  publish = "web"
+  functions = "functions"
+
+# IMPORTANT : SPA routing (équivalent du fichier _redirects)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+```
+
+👉 Avec ça, Netlify redirige *toutes* les routes vers ton index.html → **plus de Page Not Found**.
+
+Tu n’auras PAS besoin du fichier `_redirects` si tu utilises cette version.
+
+---
+
+# ✅ 2) FICHIER : `package.json` (à la racine)
+
+```json
+{
+  "name": "gr52-snaps",
+  "version": "1.0.0",
+  "type": "commonjs",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.40.0",
+    "busboy": "^1.6.0"
+  }
+}
+```
+
+---
+
+# 📁 3) DOSSIER `web/`
+
+Voici **tout le front**.
+
+---
+
+## ✅ `web/index.html`
+
+```html
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GR52 Snaps</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>GR52 Snaps</h1>
+      <p>Point : <strong id="point-id"></strong></p>
+    </header>
+
+    <section>
+      <div class="preview-wrap">
+        <img id="preview" />
+      </div>
+
+      <input id="file-input" type="file" accept="image/*" capture="environment" hidden />
+      <button id="take-photo">📸 Prendre une photo</button>
+      <button id="choose-photo">🖼️ Choisir une photo</button>
+      <button id="send-photo" disabled>📤 Envoyer</button>
+
+      <p id="status"></p>
+      <div id="log"></div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js');
+    }
+  </script>
+</body>
+</html>
+```
+
+---
+
+## ✅ `web/app.js`
+
+```javascript
+// Initialisation du front-end GR52 Snaps
+
+const SUPABASE_URL = 'VOTRE_SUPABASE_URL';
+const SUPABASE_KEY = 'VOTRE_SUPABASE_SERVICE_KEY';
+
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const pointId = new URLSearchParams(window.location.search).get('point') || 'unknown';
+document.getElementById('point-id').textContent = pointId;
+
+const fileInput = document.getElementById('file-input');
+const takePhotoBtn = document.getElementById('take-photo');
+const choosePhotoBtn = document.getElementById('choose-photo');
+const sendPhotoBtn = document.getElementById('send-photo');
+const previewImg = document.getElementById('preview');
+const statusP = document.getElementById('status');
+
+let currentFile = null;
+
+takePhotoBtn.addEventListener('click', () => fileInput.click());
+choosePhotoBtn.addEventListener('click', () => fileInput.click());
+
+fileInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  currentFile = file;
+  previewImg.src = URL.createObjectURL(file);
+  sendPhotoBtn.disabled = false;
+});
+
+sendPhotoBtn.addEventListener('click', async () => {
+  if (!currentFile) return;
+  statusP.textContent = 'Envoi en cours...';
+
+  const formData = new FormData();
+  formData.append('photo', currentFile);
+  formData.append('point_id', pointId);
+
+  try {
+    const res = await fetch('/.netlify/functions/upload-photo', {
+      method: 'POST',
+      body: formData
+    });
+
+    const data = await res.json();
+    if (res.ok) statusP.textContent = 'Photo envoyée !';
+    else statusP.textContent = 'Erreur : ' + data.error;
+
+  } catch (err) {
+    statusP.textContent = 'Erreur réseau';
+    console.error(err);
+  }
+});
+```
+
+---
+
+## ✅ `web/styles.css`
+
+Tu mets ce que tu veux. Exemple minimal :
+
+```css
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background: #f5f5f5;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+}
+
+.preview-wrap img {
+  width: 100%;
+  margin: 10px 0;
+}
+```
+
+---
+
+## ✅ `web/manifest.json`
+
+```json
+{
+  "name": "GR52 Snaps",
+  "short_name": "GR52",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#559c87ff",
+  "background_color": "#ffffff",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
+```
+
+---
+
+## ✅ `web/service-worker.js`
+
+```javascript
+self.addEventListener('install', () => {
+  console.log('Service Worker installé');
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', () => {
+  console.log('Service Worker activé');
+});
+
+self.addEventListener('fetch', () => {});
+```
+
+---
+
+# 📁 4) DOSSIER `functions/`
+
+## ✅ `functions/upload-photo.js`
+
+```javascript
+const Busboy = require('busboy');
+const { createClient } = require('@supabase/supabase-js');
+
+exports.handler = async (event) => {
+  if (event.httpMethod !== 'POST')
+    return { statusCode: 405, body: 'Méthode non autorisée' };
+
+  const supabase = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_KEY
+  );
+
+  return new Promise((resolve) => {
+    const busboy = Busboy({ headers: event.headers });
+    const fields = {};
+    let uploadedFile = null;
+
+    busboy.on('file', (field, file, filename) => {
+      let chunks = [];
+      file.on('data', (data) => chunks.push(data));
+      file.on('end', () => {
+        uploadedFile = { filename, buffer: Buffer.concat(chunks) };
+      });
+    });
+
+    busboy.on('field', (name, value) => (fields[name] = value));
+
+    busboy.on('finish', async () => {
+      try {
+        const path = `${fields.point_id}/${Date.now()}-${uploadedFile.filename}`;
+
+        const { error: uploadError } = await supabase
+          .storage.from(process.env.SUPABASE_BUCKET)
+          .upload(path, uploadedFile.buffer);
+
+        if (uploadError) throw uploadError;
+
+        const { data: urlData } = supabase.storage
+          .from(process.env.SUPABASE_BUCKET)
+          .getPublicUrl(path);
+
+        await supabase.from('photos').insert({
+          point_id: fields.point_id,
+          storage_path: path,
+          public_url: urlData.publicUrl,
+        });
+
+        resolve({
+          statusCode: 200,
+          body: JSON.stringify({ url: urlData.publicUrl })
+        });
+      } catch (err) {
+        resolve({
+          statusCode: 500,
+          body: JSON.stringify({ error: err.message })
+        });
+      }
+    });
+
+    busboy.end(Buffer.from(event.body, 'base64'));
+  });
+};
+```
+
+---
+
+# 📁 5) DOSSIER `infra/`
+
+## ✅ `infra/supabase.sql`
+
+```sql
+create table if not exists public.photos (
+  id bigserial primary key,
+  point_id text,
+  taken_at timestamptz default now(),
+  user_agent text,
+  storage_path text,
+  public_url text,
+  created_at timestamptz default now()
+);
+```
+
+---
+
+
 
