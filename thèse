@@ -19,11 +19,10 @@ Parfait. Je t’ai préparé **tous les fichiers exacts**, organisés **à la bo
 # netlify.toml - configuration prête à l'emploi
 
 [build]
-  base = ""             # vide car web est à la racine du repo
-  publish = "web"       # dossier contenant ton index.html ou ton build
-  functions = "functions"
+  base = "web"         # chemin relatif vers le dossier frontend
+  publish = "."        # publier le contenu de web/ tel quel
+  functions = "../functions"  # chemin relatif depuis base
 
-# Redirection pour SPA routing
 [[redirects]]
   from = "/*"
   to = "/index.html"
