@@ -13,7 +13,6 @@ gr52-snaps/
 # netlify.toml - configuration prête à l'emploi
 
 [build]
-  base = "web"         # chemin relatif vers le dossier frontend
   publish = "."        # publier le contenu de web/ tel quel
   functions = "../functions"  # chemin relatif depuis base
 
