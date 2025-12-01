@@ -16,17 +16,19 @@ Parfait. Je t’ai préparé **tous les fichiers exacts**, organisés **à la bo
 
 # ✅ 1) FICHIER : `netlify.toml` (à la racine)
 
-```toml
+# netlify.toml - configuration prête à l'emploi
+
 [build]
-  publish = "web"
+  base = ""             # vide car web est à la racine du repo
+  publish = "web"       # dossier contenant ton index.html ou ton build
   functions = "functions"
 
-# IMPORTANT : SPA routing (équivalent du fichier _redirects)
+# Redirection pour SPA routing
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-```
+
 
 👉 Avec ça, Netlify redirige *toutes* les routes vers ton index.html → **plus de Page Not Found**.
 
