@@ -1,11 +1,10 @@
-cd gr52-snaps
+gr52-snaps/
+    web/
+        index.html
+        script.js
+        style.css
+        manifest.json
+    functions/
+        upload-image.js
+    netlify.toml   (optionnel)
 
-git init
-git add .
-git commit -m "Initial commit"
-
-git branch -M main
-
-git remote add origin https://github.com/VOUS/gr52-snaps.git
-
-git push -u origin main
