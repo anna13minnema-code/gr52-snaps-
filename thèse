@@ -1,6 +1,5 @@
 ### **1️⃣ Structure complète du projet**
 
-```
 index.html
 app.js
 style.css
@@ -9,12 +8,8 @@ service-worker.js
 _redirects
 netlify.toml
 package.json
-├─ functions/
-│   └─ upload-photo.js
-└─ icons/
-    ├─ icon-192.png
-    └─ icon-512.png
-```
+functions/
+icons/
 
 > Les fichiers `icon-192.png` et `icon-512.png` doivent exister. Tu peux mettre tes propres icônes ou télécharger des images PWA temporaires pour tester.
 
