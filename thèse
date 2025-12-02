@@ -1,4 +1,7 @@
-gr52-snaps/
+### **1️⃣ Structure complète du projet**
+
+```
+/ (racine du repo)
 ├─ index.html
 ├─ app.js
 ├─ style.css
@@ -7,10 +10,20 @@ gr52-snaps/
 ├─ _redirects
 ├─ netlify.toml
 ├─ package.json
-└─ functions/
-    └─ upload-photo.js
+├─ functions/
+│   └─ upload-photo.js
+└─ icons/
+    ├─ icon-192.png
+    └─ icon-512.png
+```
 
- 1) index.html
+> Les fichiers `icon-192.png` et `icon-512.png` doivent exister. Tu peux mettre tes propres icônes ou télécharger des images PWA temporaires pour tester.
+
+---
+
+### **2️⃣ `index.html`**
+
+```html
 <!doctype html>
 <html lang="fr">
 <head>
@@ -52,12 +65,13 @@ gr52-snaps/
   </script>
 </body>
 </html>
+```
 
-2) `app.js`
+---
+
+### **3️⃣ `app.js`**
 
 ```javascript
-// Initialisation du front-end GR52 Snaps
-
 const SUPABASE_URL = 'VOTRE_SUPABASE_URL';
 const SUPABASE_KEY = 'VOTRE_SUPABASE_SERVICE_KEY';
 
@@ -113,9 +127,7 @@ sendPhotoBtn.addEventListener('click', async () => {
 
 ---
 
-3)  `styles.css`
-
-Tu mets ce que tu veux. Exemple minimal :
+### **4️⃣ `style.css`**
 
 ```css
 body {
@@ -134,7 +146,10 @@ body {
   margin: 10px 0;
 }
 ```
-4) `manifest.json`
+
+---
+
+### **5️⃣ `manifest.json`**
 
 ```json
 {
@@ -151,7 +166,9 @@ body {
 }
 ```
 
-5) `service-worker.js`
+---
+
+### **6️⃣ `service-worker.js`**
 
 ```javascript
 self.addEventListener('install', () => {
@@ -167,8 +184,10 @@ self.addEventListener('fetch', () => {});
 ```
 
 ---
-6 ) `netlify.toml` (à la racine)
 
+### **7️⃣ `netlify.toml`**
+
+```toml
 [build]
   publish = "."
   functions = "functions"
@@ -177,11 +196,21 @@ self.addEventListener('fetch', () => {});
   from = "/*"
   to = "/index.html"
   status = 200
+```
 
 ---
 
-7)  `package.json` (à la racine)
+### **8️⃣ `_redirects`**
 
+```
+/*    /index.html   200
+```
+
+---
+
+### **9️⃣ `package.json`**
+
+```json
 {
   "name": "gr52-snaps",
   "version": "1.0.0",
@@ -195,97 +224,31 @@ self.addEventListener('fetch', () => {});
     "build": "echo 'Nothing to build, just serving static files'"
   }
 }
-
-
----
-
-
-
-8) `functions/upload-photo.js`
-
-```javascript
-const Busboy = require('busboy');
-const { createClient } = require('@supabase/supabase-js');
-
-exports.handler = async (event) => {
-  if (event.httpMethod !== 'POST')
-    return { statusCode: 405, body: 'Méthode non autorisée' };
-
-  const supabase = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_KEY
-  );
-
-  return new Promise((resolve) => {
-    const busboy = Busboy({ headers: event.headers });
-    const fields = {};
-    let uploadedFile = null;
-
-    busboy.on('file', (field, file, filename) => {
-      let chunks = [];
-      file.on('data', (data) => chunks.push(data));
-      file.on('end', () => {
-        uploadedFile = { filename, buffer: Buffer.concat(chunks) };
-      });
-    });
-
-    busboy.on('field', (name, value) => (fields[name] = value));
-
-    busboy.on('finish', async () => {
-      try {
-        const path = `${fields.point_id}/${Date.now()}-${uploadedFile.filename}`;
-
-        const { error: uploadError } = await supabase
-          .storage.from(process.env.SUPABASE_BUCKET)
-          .upload(path, uploadedFile.buffer);
-
-        if (uploadError) throw uploadError;
-
-        const { data: urlData } = supabase.storage
-          .from(process.env.SUPABASE_BUCKET)
-          .getPublicUrl(path);
-
-        await supabase.from('photos').insert({
-          point_id: fields.point_id,
-          storage_path: path,
-          public_url: urlData.publicUrl,
-        });
-
-        resolve({
-          statusCode: 200,
-          body: JSON.stringify({ url: urlData.publicUrl })
-        });
-      } catch (err) {
-        resolve({
-          statusCode: 500,
-          body: JSON.stringify({ error: err.message })
-        });
-      }
-    });
-
-    busboy.end(Buffer.from(event.body, 'base64'));
-  });
-};
 ```
 
 ---
 
+### **10️⃣ `functions/upload-photo.js`**
 
-9) `infra/supabase.sql`
-
-```sql
-create table if not exists public.photos (
-  id bigserial primary key,
-  point_id text,
-  taken_at timestamptz default now(),
-  user_agent text,
-  storage_path text,
-  public_url text,
-  created_at timestamptz default now()
-);
-```
+Identique à ton code actuel, à condition que les variables d’environnement soient configurées sur Netlify (`SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `SUPABASE_BUCKET`).
 
 ---
 
+### ✅ **Instructions finales**
 
+1. Copier-coller la structure complète dans ton dépôt GitHub.
+2. Ajouter les variables d’environnement Supabase dans Netlify.
+3. Pousser sur GitHub et laisser Netlify reconstruire le site.
+4. Tester en local avec :
 
+```bash
+netlify dev
+```
+
+Après ça, ton site devrait **s’afficher correctement** et les fonctions Netlify devraient être opérationnelles.
+
+---
+
+Si tu veux, je peux te faire un **schéma visuel simple** de la structure du projet et de la relation `Netlify → functions → Supabase`, pour que tout soit clair et éviter tout futur problème de déploiement.
+
+Veux‑tu que je fasse ça ?
