@@ -1,55 +1,16 @@
 gr52-snaps/
-    index.html
-    script.js
-    style.css
-    manifest.json
-    _redirects
-    functions/
-        upload-image.js
-    netlify.toml
---- 
+├─ index.html
+├─ app.js
+├─ style.css
+├─ manifest.json
+├─ service-worker.js
+├─ _redirects
+├─ netlify.toml
+├─ package.json
+└─ functions/
+    └─ upload-photo.js
 
-# ✅ 1) FICHIER : `netlify.toml` (à la racine)
-
-[build]
-  publish = "."
-  functions = "functions"
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-
----
-
-# ✅ 2) FICHIER : `package.json` (à la racine)
-
-{
-  "name": "gr52-snaps",
-  "version": "1.0.0",
-  "type": "commonjs",
-  "dependencies": {
-    "@supabase/supabase-js": "^2.40.0",
-    "busboy": "^1.6.0"
-  },
-  "scripts": {
-    "start": "echo 'Nothing to build, just serving static files'",
-    "build": "echo 'Nothing to build, just serving static files'"
-  }
-}
-
-
----
-
-# 📁 3) DOSSIER `web/`
-
-Voici **tout le front**.
-
----
-
-## ✅ `web/index.html`
-
-```html
+ 1) index.html
 <!doctype html>
 <html lang="fr">
 <head>
@@ -57,7 +18,7 @@ Voici **tout le front**.
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>GR52 Snaps</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <main class="container">
@@ -91,11 +52,8 @@ Voici **tout le front**.
   </script>
 </body>
 </html>
-```
 
----
-
-## ✅ `web/app.js`
+2) `app.js`
 
 ```javascript
 // Initialisation du front-end GR52 Snaps
@@ -155,7 +113,7 @@ sendPhotoBtn.addEventListener('click', async () => {
 
 ---
 
-## ✅ `web/styles.css`
+3)  `styles.css`
 
 Tu mets ce que tu veux. Exemple minimal :
 
@@ -178,8 +136,55 @@ body {
 ```
 
 ---
+4) `service-worker.js`
 
-## ✅ `web/manifest.json`
+```javascript
+self.addEventListener('install', () => {
+  console.log('Service Worker installé');
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', () => {
+  console.log('Service Worker activé');
+});
+
+self.addEventListener('fetch', () => {});
+```
+
+---
+5 ) `netlify.toml` (à la racine)
+
+[build]
+  publish = "."
+  functions = "functions"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+---
+
+6)  `package.json` (à la racine)
+
+{
+  "name": "gr52-snaps",
+  "version": "1.0.0",
+  "type": "commonjs",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.40.0",
+    "busboy": "^1.6.0"
+  },
+  "scripts": {
+    "start": "echo 'Nothing to build, just serving static files'",
+    "build": "echo 'Nothing to build, just serving static files'"
+  }
+}
+
+
+---
+
+7) `manifest.json`
 
 ```json
 {
@@ -198,26 +203,8 @@ body {
 
 ---
 
-## ✅ `web/service-worker.js`
 
-```javascript
-self.addEventListener('install', () => {
-  console.log('Service Worker installé');
-  self.skipWaiting();
-});
-
-self.addEventListener('activate', () => {
-  console.log('Service Worker activé');
-});
-
-self.addEventListener('fetch', () => {});
-```
-
----
-
-# 📁 4) DOSSIER `functions/`
-
-## ✅ `functions/upload-photo.js`
+8) `functions/upload-photo.js`
 
 ```javascript
 const Busboy = require('busboy');
@@ -286,9 +273,8 @@ exports.handler = async (event) => {
 
 ---
 
-# 📁 5) DOSSIER `infra/`
 
-## ✅ `infra/supabase.sql`
+9) `infra/supabase.sql`
 
 ```sql
 create table if not exists public.photos (
