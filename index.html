@@ -1,0 +1,47 @@
+### **2️⃣ `index.html`**
+
+```html
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GR52 Snaps</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container">
+    <header>
+      <h1>GR52 Snaps</h1>
+      <p>Point : <strong id="point-id"></strong></p>
+    </header>
+
+    <section>
+      <div class="preview-wrap">
+        <img id="preview" />
+      </div>
+
+      <input id="file-input" type="file" accept="image/*" capture="environment" hidden />
+      <button id="take-photo">📸 Prendre une photo</button>
+      <button id="choose-photo">🖼️ Choisir une photo</button>
+      <button id="send-photo" disabled>📤 Envoyer</button>
+
+      <p id="status"></p>
+      <div id="log"></div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js');
+    }
+  </script>
+</body>
+</html>
+```
+
+---
