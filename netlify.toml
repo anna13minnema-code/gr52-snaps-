@@ -9,3 +9,6 @@
   to = "/index.html"
   status = 200
 ```
+git add netlify.toml
+git commit -m "Fix netlify.toml for static deploy"
+git push
