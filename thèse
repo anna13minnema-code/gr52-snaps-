@@ -23,35 +23,9 @@ icons/
 
 
 
-### **6️⃣ `service-worker.js`**
 
-```javascript
-self.addEventListener('install', () => {
-  console.log('Service Worker installé');
-  self.skipWaiting();
-});
 
-self.addEventListener('activate', () => {
-  console.log('Service Worker activé');
-});
 
-self.addEventListener('fetch', () => {});
-```
-
----
-
-### **7️⃣ `netlify.toml`**
-
-```toml
-[build]
-  publish = "."
-  functions = "functions"
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-```
 
 ---
 
