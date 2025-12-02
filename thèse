@@ -1,15 +1,14 @@
 ### **1️⃣ Structure complète du projet**
 
 ```
-/ (racine du repo)
-├─ index.html
-├─ app.js
-├─ style.css
-├─ manifest.json
-├─ service-worker.js
-├─ _redirects
-├─ netlify.toml
-├─ package.json
+index.html
+app.js
+style.css
+manifest.json
+service-worker.js
+_redirects
+netlify.toml
+package.json
 ├─ functions/
 │   └─ upload-photo.js
 └─ icons/
