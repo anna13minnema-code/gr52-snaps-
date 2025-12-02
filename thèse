@@ -199,14 +199,6 @@ self.addEventListener('fetch', () => {});
 
 ---
 
-### **8️⃣ `_redirects`**
-
-```
-/*    /index.html   200
-```
-
----
-
 ### **9️⃣ `package.json`**
 
 ```json
