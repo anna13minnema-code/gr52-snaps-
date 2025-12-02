@@ -2,8 +2,8 @@
 
 ```toml
 [build]
-  publish = "."
-  functions = "functions"
+  command = "npm run build"
+  publish = "dist"
 
 [[redirects]]
   from = "/*"
