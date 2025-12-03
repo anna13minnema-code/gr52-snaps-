@@ -1,16 +1,13 @@
-### **9️⃣ `package.json`**
-
 {
-"name": "gr52-snaps",
-"version": "1.0.0",
-"type": "commonjs",
-"dependencies": {
-"@supabase/supabase-js": "^2.40.0",
-"busboy": "^1.6.0"
-},
-"scripts": {
-"start": "echo 'Nothing to build, just serving static files'",
-"build": "echo 'No build needed, static files ready'"
+  "name": "gr52-snaps",
+  "version": "1.0.0",
+  "type": "commonjs",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.40.0",
+    "busboy": "^1.6.0"
+  },
+  "scripts": {
+    "start": "echo 'Nothing to build, just serving static files'",
+    "build": "echo 'No build needed, static files ready'"
+  }
 }
-}
-
