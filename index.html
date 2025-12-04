@@ -1,47 +1,37 @@
-### **2️⃣ `index.html`**
-
-```html
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GR52 Snaps</title>
-  <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-  <main class="container">
-    <header>
-      <h1>GR52 Snaps</h1>
-      <p>Point : <strong id="point-id"></strong></p>
-    </header>
+
+  <header>
+    <h1>📸 GR52 Snaps</h1>
+    <p>Partagez vos photos de randonnée • Souvenirs du GR52</p>
+  </header>
+
+  <main>
+    <section id="camera-area">
+      <button id="takePhotoBtn">📷 Prendre une photo</button>
+      <video id="camera" autoplay playsinline></video>
+      <canvas id="canvas" style="display:none;"></canvas>
+      <button id="captureBtn" style="display:none;">Capturer</button>
+    </section>
 
     <section>
-      <div class="preview-wrap">
-        <img id="preview" />
-      </div>
-
-      <input id="file-input" type="file" accept="image/*" capture="environment" hidden />
-      <button id="take-photo">📸 Prendre une photo</button>
-      <button id="choose-photo">🖼️ Choisir une photo</button>
-      <button id="send-photo" disabled>📤 Envoyer</button>
-
-      <p id="status"></p>
-      <div id="log"></div>
+      <h2>🌄 Galerie des photos</h2>
+      <div id="gallery" class="gallery"></div>
     </section>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js"></script>
+  <footer>
+    GR52 Snaps — Projet de partage photo 🌿
+  </footer>
 
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js');
-    }
-  </script>
+  <script src="app.js"></script>
 </body>
 </html>
-```
-
----
