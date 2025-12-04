@@ -8,3 +8,9 @@ netlify.toml
 package.json
 functions/
 icons/
+/etapes/
+    etape1.html
+    etape2.html
+    etape3.html
+    etape4.html
+    etape5.html
