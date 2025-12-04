@@ -1,87 +1,57 @@
-/* --- RESET SIMPLE --- */
-body, h1, h2, p, button {
-  margin: 0;
-  padding: 0;
-  font-family: "Segoe UI", sans-serif;
+:root{
+  --green:#234b2b;   /* vert sapin foncé */
+  --beige:#f2e9de;   /* beige doux */
+  --muted:#6b6b6b;
+  --accent:#8fb88f;
 }
 
-body {
-  background: #f4f7f9;
-  color: #333;
+*{box-sizing:border-box}
+body{
+  font-family: Inter, "Segoe UI", sans-serif;
+  background: linear-gradient(180deg, #f8faf6 0%, #f4f7f3 100%);
+  color:#222;
+  margin:0;
+  -webkit-font-smoothing:antialiased;
 }
 
-/* --- HEADER --- */
-header {
-  text-align: center;
-  padding: 40px 20px;
-  background: #4c7cff;
-  color: white;
-  border-bottom-left-radius: 30px;
-  border-bottom-right-radius: 30px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-}
+.wrap{max-width:1000px;margin:0 auto;padding:20px}
 
-header h1 {
-  font-size: 2.5rem;
-  margin-bottom: 10px;
+.site-header{
+  background: linear-gradient(90deg, var(--green), #2f6b3a);
+  color:white;
+  padding:32px 0;
+  border-bottom-left-radius:18px;
+  border-bottom-right-radius:18px;
+  box-shadow:0 6px 18px rgba(35,75,43,0.12);
 }
+.site-header.small{padding:16px}
+.site-header h1{margin:0;font-size:1.9rem}
+.site-header p.lead{opacity:0.95;margin-top:8px;color:var(--beige)}
 
-/* --- MAIN --- */
-main {
-  width: 90%;
-  max-width: 900px;
-  margin: 30px auto;
-}
+.site-footer{padding:18px 0;text-align:center;color:var(--muted)}
 
-/* --- CAMERA SECTION --- */
-#camera-area {
-  text-align: center;
-  margin-bottom: 40px;
+.intro p{line-height:1.5;color:#333;margin-top:8px}
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:12px}
+.step-card{
+  display:flex;flex-direction:column;align-items:flex-start;padding:16px;border-radius:12px;
+  background:linear-gradient(180deg,var(--beige),#efe6d8);
+  color:var(--green);text-decoration:none;box-shadow:0 3px 10px rgba(15,40,20,0.06);
+  transition:transform .12s ease;
 }
+.step-card:hover{transform:translateY(-6px)}
 
-#camera {
-  width: 100%;
-  max-width: 400px;
-  margin-top: 20px;
-  border-radius: 20px;
-  display: none;
-}
+.step-card strong{font-size:1.1rem}
+.step-card span{opacity:.8;margin-top:8px;font-size:.9rem}
 
-/* --- BUTTONS --- */
-button {
-  padding: 12px 20px;
-  background: #4c7cff;
-  color: white;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  font-size: 1.1rem;
-  transition: 0.2s;
-}
+/* camera */
+.camera-area{margin:18px 0;text-align:center}
+#camera{width:100%;max-width:700px;border-radius:12px;margin:12px auto;box-shadow:0 8px 22px rgba(0,0,0,0.08)}
+.camera-controls{display:flex;gap:12px;justify-content:center;margin-bottom:8px}
 
-button:hover {
-  background: #335fdc;
-}
+/* gallery */
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:14px}
+.gallery img{width:100%;height:160px;object-fit:cover;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.08)}
+@media (min-width:900px){ .gallery img{height:220px} }
 
-/* --- GALLERY --- */
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 15px;
-  margin-top: 20px;
-}
-
-.gallery img {
-  width: 100%;
-  border-radius: 15px;
-  object-fit: cover;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-}
-
-/* --- FOOTER --- */
-footer {
-  text-align: center;
-  padding: 20px;
-  margin-top: 40px;
-  color: #777;
-}
+/* small utilities */
+.back{color:rgba(255,255,255,0.9);text-decoration:none;float:right}
