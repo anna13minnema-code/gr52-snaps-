@@ -1,5 +1,3 @@
-### **3️⃣ `app.js`**
-
 ```javascript
 const SUPABASE_URL = 'VOTRE_SUPABASE_URL';
 const SUPABASE_KEY = 'VOTRE_SUPABASE_SERVICE_KEY';
