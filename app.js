@@ -1,55 +1,62 @@
-```javascript
-const SUPABASE_URL = 'VOTRE_SUPABASE_URL';
-const SUPABASE_KEY = 'VOTRE_SUPABASE_SERVICE_KEY';
-
+// --- INITIALISATION SUPABASE ---
+const SUPABASE_URL = "https://YOUR-PROJECT.supabase.co";
+const SUPABASE_KEY = "YOUR_PUBLIC_ANON_KEY";
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const pointId = new URLSearchParams(window.location.search).get('point') || 'unknown';
-document.getElementById('point-id').textContent = pointId;
+// --- ELEMENTS DOM ---
+const camera = document.getElementById("camera");
+const canvas = document.getElementById("canvas");
+const takePhotoBtn = document.getElementById("takePhotoBtn");
+const captureBtn = document.getElementById("captureBtn");
+const gallery = document.getElementById("gallery");
 
-const fileInput = document.getElementById('file-input');
-const takePhotoBtn = document.getElementById('take-photo');
-const choosePhotoBtn = document.getElementById('choose-photo');
-const sendPhotoBtn = document.getElementById('send-photo');
-const previewImg = document.getElementById('preview');
-const statusP = document.getElementById('status');
+// --- DEMARRER LA CAMERA ---
+takePhotoBtn.addEventListener("click", async () => {
+  const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+  camera.srcObject = stream;
 
-let currentFile = null;
-
-takePhotoBtn.addEventListener('click', () => fileInput.click());
-choosePhotoBtn.addEventListener('click', () => fileInput.click());
-
-fileInput.addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  currentFile = file;
-  previewImg.src = URL.createObjectURL(file);
-  sendPhotoBtn.disabled = false;
+  camera.style.display = "block";
+  captureBtn.style.display = "inline-block";
 });
 
-sendPhotoBtn.addEventListener('click', async () => {
-  if (!currentFile) return;
-  statusP.textContent = 'Envoi en cours...';
+// --- CAPTURER ET UPLOADER ---
+captureBtn.addEventListener("click", async () => {
+  const ctx = canvas.getContext("2d");
+  canvas.width = camera.videoWidth;
+  canvas.height = camera.videoHeight;
+  ctx.drawImage(camera, 0, 0);
 
-  const formData = new FormData();
-  formData.append('photo', currentFile);
-  formData.append('point_id', pointId);
+  canvas.toBlob(async (blob) => {
+    const fileName = `photo_${Date.now()}.jpg`;
 
-  try {
-    const res = await fetch('/.netlify/functions/upload-photo', {
-      method: 'POST',
-      body: formData
-    });
+    const { error } = await supabase.storage
+      .from("photos")   // ← CHANGE le nom ici si ton bucket est différent
+      .upload(fileName, blob, {
+        contentType: "image/jpeg"
+      });
 
-    const data = await res.json();
-    if (res.ok) statusP.textContent = 'Photo envoyée !';
-    else statusP.textContent = 'Erreur : ' + data.error;
-
-  } catch (err) {
-    statusP.textContent = 'Erreur réseau';
-    console.error(err);
-  }
+    if (!error) loadImages();
+  });
 });
-```
 
----
+// --- CHARGER LES IMAGES EXISTANTES ---
+async function loadImages() {
+  const { data, error } = await supabase.storage
+    .from("photos")
+    .list("", { limit: 100 });
+
+  if (error) return;
+
+  gallery.innerHTML = "";
+
+  data.forEach(img => {
+    const url = `${SUPABASE_URL}/storage/v1/object/public/photos/${img.name}`;
+
+    const imgEl = document.createElement("img");
+    imgEl.src = url;
+    gallery.appendChild(imgEl);
+  });
+}
+
+// Charger au démarrage
+loadImages();
