@@ -1,37 +1,54 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GR52 Snaps</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GR52 Observatoire — Accueil</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-
-  <header>
-    <h1>📸 GR52 Snaps</h1>
-    <p>Partagez vos photos de randonnée • Souvenirs du GR52</p>
+  <header class="site-header">
+    <div class="wrap">
+      <h1>GR52 Observatoire</h1>
+      <p class="lead">Suivi photographique des trépieds — Observations quotidiennes</p>
+    </div>
   </header>
 
-  <main>
-    <section id="camera-area">
-      <button id="takePhotoBtn">📷 Prendre une photo</button>
-      <video id="camera" autoplay playsinline></video>
-      <canvas id="canvas" style="display:none;"></canvas>
-      <button id="captureBtn" style="display:none;">Capturer</button>
+  <main class="wrap">
+    <section class="intro">
+      <h2>Objectif de la thèse</h2>
+      <p>
+        Ce site centralise des photographies prises depuis 5 trépieds fixes le long du GR52.
+        L’objectif est d’observer l’évolution des versants, cours d'eau et autres risques
+        d’érosion au fil des jours. Chaque étape a sa galerie dédiée.
+      </p>
     </section>
 
-    <section>
-      <h2>🌄 Galerie des photos</h2>
-      <div id="gallery" class="gallery"></div>
+    <section class="steps">
+      <h2>Étapes & galeries</h2>
+      <div class="steps-grid">
+        <a class="step-card" href="etape.html?step=1"><strong>Étape 1</strong><span>Trépied 1</span></a>
+        <a class="step-card" href="etape.html?step=2"><strong>Étape 2</strong><span>Trépied 2</span></a>
+        <a class="step-card" href="etape.html?step=3"><strong>Étape 3</strong><span>Trépied 3</span></a>
+        <a class="step-card" href="etape.html?step=4"><strong>Étape 4</strong><span>Trépied 4</span></a>
+        <a class="step-card" href="etape.html?step=5"><strong>Étape 5</strong><span>Trépied 5</span></a>
+      </div>
+    </section>
+
+    <section class="how">
+      <h2>Mode d'emploi</h2>
+      <ul>
+        <li>Sur chaque trépied, les participants prennent une photo depuis le point marqué.</li>
+        <li>Les photos sont classées automatiquement dans la galerie de l'étape.</li>
+        <li>Pour la rigueur scientifique : encouragez l’alignement du cadrage et la prise à la même heure quand possible.</li>
+      </ul>
     </section>
   </main>
 
-  <footer>
-    GR52 Snaps — Projet de partage photo 🌿
+  <footer class="site-footer">
+    <div class="wrap">GR52 Observatoire — Projet de thèse • <small>Ambiance vert sapin / beige</small></div>
   </footer>
 
-  <script src="app.js"></script>
+  <script src="app.js" defer></script>
 </body>
 </html>
